@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js"></script>
+</head>
+
+<body>
+
+    <div id="scoreboard" style="
+        width: 900px;
+        height: 80px;
+        background: #222;
+        color: white;
+        font-size: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 10px;
+    ">
+
+
+    </div>
+    <div style="display: flex;
+    width: 900px;">
+
+        <div id="rightTeamColor" style="
+        width: 450px;
+       height: 20px;
+       background: #ff0000;">
+        </div>
+
+        <div id="rightTeamColor" style="
+        height: 20px;
+        width: 450px;
+        background: #0066da;">
+        </div>
+    </div>
+
+
+
+    <div id="timer" style="
+    width: 900px;
+    height: 40px;
+    background: #222;
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 0px;
+">
+
+        <button id="restartBtn" style="
+    position: absolute;
+    top: 150px;
+    left: 400px;
+    font-size: 24px;
+    padding: 10px 20px;
+    display: none;
+">Restart</button>
+
+
+
+        <div id="scoreText">90:00</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

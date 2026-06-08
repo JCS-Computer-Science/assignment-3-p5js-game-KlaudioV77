@@ -9,6 +9,7 @@ class Player {
         this.y = y;
         this.size = size;
         this.speed = speed;
+        this.stamina = 100;
     }
 }
 
@@ -23,7 +24,18 @@ class Ball {
     }
 }
 
+let paused = false;
+
 function draw() {
+
+    if (paused) {
+        background(0, 128, 0);
+        textSize(60);
+        fill(0);
+        textAlign(CENTER, CENTER);
+        text("PAUSED", width / 2, height / 2);
+        return;
+    }
 
     if (!gameOver) {
         matchTime += deltaTime / 1000;
@@ -77,7 +89,6 @@ function draw() {
     updateBall();
     drawPlayer2();
     movePlayer2();
-    keyPressed();
 
     if (gameOver) {
         textSize(40);
@@ -194,11 +205,23 @@ let rightScore = 0;
 function drawPlayer() {
     fill(255, 0, 0);
     circle(player.x, player.y, 40);
+
+    fill(0);
+    rect(player.x - 20, player.y - 35, 40, 5);
+
+    fill(0, 255, 0);
+    rect(player.x - 20, player.y - 35, player.stamina * 0.4, 5);
 }
 
 function drawPlayer2() {
     fill(0, 0, 255);
     circle(player2.x, player2.y, 40);
+
+    fill(0);
+    rect(player2.x - 20, player2.y - 35, 40, 5);
+
+    fill(0, 255, 0);
+    rect(player2.x - 20, player2.y - 35, player2.stamina * 0.4, 5);
 }
 
 function movePlayer2() {
@@ -207,8 +230,12 @@ function movePlayer2() {
 
     let r = player2.size / 2;
 
+    let currentSpeed2 = player2.speed;
+    if (player2.stamina < 20) currentSpeed2 = player2.speed * 0.5;
+
     if (keyIsDown(38)) {
-        let nextY2 = player2.y - player2.speed;
+        player2.stamina -= 0.2;
+        let nextY2 = player2.y - currentSpeed2;
         let nextX2 = player2.x;
         if (nextY2 > r) {
             if (!collidesWithRightTop(nextX2, nextY2, r) && !collidesWithLeftTop(nextX2, nextY2, r) && !collidesWithRightBottom(nextX2, nextY2, r) && !collidesWithLeftBottom(nextX2, nextY2, r)) {
@@ -218,7 +245,8 @@ function movePlayer2() {
     }
 
     if (keyIsDown(40)) {
-        let nextY2 = player2.y + player2.speed;
+        player2.stamina -= 0.2;
+        let nextY2 = player2.y + currentSpeed2;
         let nextX2 = player2.x;
 
         if (nextY2 < 600 - r) {
@@ -229,7 +257,8 @@ function movePlayer2() {
     }
 
     if (keyIsDown(37)) {
-        let nextX2 = player2.x - player2.speed;
+        player2.stamina -= 0.2;
+        let nextX2 = player2.x - currentSpeed2;
         let nextY2 = player2.y;
         if (nextX2 > r) {
             if (!collidesWithLeftTop(nextX2, nextY2, r) && !collidesWithLeftBottom(nextX2, nextY2, r)) {
@@ -239,7 +268,8 @@ function movePlayer2() {
     }
 
     if (keyIsDown(39)) {
-        let nextX2 = player2.x + player2.speed;
+        player2.stamina -= 0.2;
+        let nextX2 = player2.x + currentSpeed2;
         let nextY2 = player2.y;
 
         if (nextX2 < 900 - r) {
@@ -248,6 +278,9 @@ function movePlayer2() {
             }
         }
     }
+
+    player2.stamina += 0.1;
+    player2.stamina = constrain(player2.stamina, 0, 100);
 
     let dx = ball.x - player2.x;
     let dy = ball.y - player2.y;
@@ -283,8 +316,12 @@ function movePlayer() {
 
     let r = player.size / 2;
 
+    let currentSpeed = player.speed;
+    if (player.stamina < 20) currentSpeed = player.speed * 0.5;
+
     if (keyIsDown(87)) {
-        let nextY = player.y - player.speed;
+        player.stamina -= 0.2;
+        let nextY = player.y - currentSpeed;
         let nextX = player.x;
         if (nextY > r) {
             if (!collidesWithRightTop(nextX, nextY, r) && !collidesWithLeftTop(nextX, nextY, r) && !collidesWithRightBottom(nextX, nextY, r) && !collidesWithLeftBottom(nextX, nextY, r)) {
@@ -294,7 +331,8 @@ function movePlayer() {
     }
 
     if (keyIsDown(83)) {
-        let nextY = player.y + player.speed;
+        player.stamina -= 0.2;
+        let nextY = player.y + currentSpeed;
         let nextX = player.x;
 
         if (nextY < 600 - r) {
@@ -305,7 +343,8 @@ function movePlayer() {
     }
 
     if (keyIsDown(65)) {
-        let nextX = player.x - player.speed;
+        player.stamina -= 0.2;
+        let nextX = player.x - currentSpeed;
         let nextY = player.y;
         if (nextX > r) {
             if (!collidesWithLeftTop(nextX, nextY, r) && !collidesWithLeftBottom(nextX, nextY, r)) {
@@ -315,7 +354,8 @@ function movePlayer() {
     }
 
     if (keyIsDown(68)) {
-        let nextX = player.x + player.speed;
+        player.stamina -= 0.2;
+        let nextX = player.x + currentSpeed;
         let nextY = player.y;
 
         if (nextX < 900 - r) {
@@ -324,6 +364,9 @@ function movePlayer() {
             }
         }
     }
+
+    player.stamina += 0.1;
+    player.stamina = constrain(player.stamina, 0, 100);
 
     let dx = ball.x - player.x;
     let dy = ball.y - player.y;
@@ -598,11 +641,13 @@ function resetBall() {
 function resetPlayer() {
     player.x = 200;
     player.y = 300;
+    player.stamina = 100;
 }
 
 function resetPlayer2() {
     player2.x = 700;
     player2.y = 300;
+    player2.stamina = 100;
 }
 
 function updateScoreboard() {
@@ -614,6 +659,11 @@ function endGame() {
 }
 
 function keyPressed() {
+
+    if (key === 'p') {
+        paused = !paused;
+    }
+
     if (gameOver && key === 'r') {
         restartMatch();
     }
